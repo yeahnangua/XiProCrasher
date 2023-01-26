@@ -4,4 +4,6 @@
 
 
 A simple lua to crash chinese copy menu named XiPro
+
+
 Only have chinese version
