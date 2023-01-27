@@ -2,39 +2,8 @@ util.keep_running()
 util.require_natives("natives-1663599433")
 
 
- 
 
 
-
-function CreateVehicle(Hash, Pos, Heading, Invincible)
-    STREAMING.REQUEST_MODEL(Hash)
-    while not STREAMING.HAS_MODEL_LOADED(Hash) do util.yield() end
-    local SpawnedVehicle = entities.create_vehicle(Hash, Pos, Heading)
-    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(Hash)
-    if Invincible then
-        ENTITY.SET_ENTITY_INVINCIBLE(SpawnedVehicle, true)
-    end
-    return SpawnedVehicle
-end
-
-function CreateObject(Hash, Pos, static)
-    STREAMING.REQUEST_MODEL(Hash)
-    while not STREAMING.HAS_MODEL_LOADED(Hash) do util.yield() end
-    local SpawnedVehicle = entities.create_object(Hash, Pos)
-    STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(Hash)
-    if static then
-        ENTITY.FREEZE_ENTITY_POSITION(SpawnedVehicle, true)
-    end
-    return SpawnedVehicle
-end
-
-function CreatePed(index, Hash, Pos, Heading)
-    STREAMING.REQUEST_MODEL(Hash)
-    while not STREAMING.HAS_MODEL_LOADED(Hash) do util.yield() end
-    local SpawnedVehicle = entities.create_ped(index, Hash, Pos, Heading)
-	STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(Hash)
-    return SpawnedVehicle
-end
 
 
 local function player(pid) 
@@ -44,23 +13,59 @@ menu.divider(menu.player_root(pid), "xipro专崩")
 
     local crash = menu.list(menu.player_root(pid), "选择你的崩溃方式", {}, "")
     menu.action(crash, "开崩", {"crash_xipro=>"}, "一时兴起，先放这一个", function()
-            local model_array = {util.joaat("boattrailer"),util.joaat("trailersmall"),util.joaat("raketrailer"),}
-                    local BAD_attach = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(pid))
-                    local fuck_ped = CreatePed(26 , util.joaat("ig_kaylee"), BAD_attach, 0)
-                    ENTITY.SET_ENTITY_VISIBLE(fuck_ped, false)
+	
+	chat.send_message("请注意 将在7秒后崩溃xipro 公屏发送数字 1 可更换战局",false,true,true)
+		util.yield(200)
+		util.request_model("a_m_y_beach_04", 100)
+		util.request_model("boattrailer", 100)
+		util.request_model("trailersmall", 100)
+		util.request_model("raketrailer", 100)
+		
+		
+	
+			chat.on_message(function(sender, reserved, text, team_chat, networked, is_auto)
+				if string.find(text,"1") then
+				util.toast("find 1")
+				menu.trigger_commands("kick" .. players.get_name(sender))
+				end
+				
+			end)
+			util.yield(7000)
+			
+			local player_ped_location = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(pid))
+                   
+					local ped_to_collect = entities.create_ped(0 , util.joaat("a_m_y_beach_04"), player_ped_location, 0)
+			for j = 1,5,1 do
+			
+			
+					local model_array = {util.joaat("boattrailer"),util.joaat("trailersmall"),util.joaat("raketrailer"),}
+                    
+                    ENTITY.SET_ENTITY_VISIBLE(ped_to_collect, true)
                     for i = 1, 3, 1 do
-                        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(fuck_ped, BAD_attach.x, BAD_attach.y, BAD_attach.z)
+                        ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ped_to_collect, player_ped_location.x, player_ped_location.y, player_ped_location.z)
                         for spawn, value in pairs(model_array) do
                             local vels = {}
-                            vels[spawn] = CreateVehicle(value, BAD_attach, 0)
+                            vels[spawn] = entities.create_vehicle(value, player_ped_location, 0)
+							
                             for attach, value in pairs(vels) do
-                                ENTITY.ATTACH_ENTITY_BONE_TO_ENTITY_BONE_Y_FORWARD(value, fuck_ped, 0, 0, true, true)
+                                ENTITY.ATTACH_ENTITY_BONE_TO_ENTITY_BONE_Y_FORWARD(value, ped_to_collect, 0, 0, true, true)
                             end
                         end
-                        util.yield(500)
-                        menu.trigger_commands("explode" ..  players.get_name(pid))
+                        
                     end
+					
+			
+			end
+				
+                        menu.trigger_commands("explode" ..  players.get_name(pid)) 
+						util.yield(1000)
+						
+util.toast("崩溃完成 关闭脚本")
+util.stop_script()	
+				
 					end)
+			
+			
 
 	
 
