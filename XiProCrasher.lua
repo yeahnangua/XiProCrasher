@@ -12,13 +12,26 @@ menu.divider(menu.player_root(pid), "xipro专崩")
 	
 
     local crash = menu.list(menu.player_root(pid), "选择你的崩溃方式", {}, "")
-    menu.action(crash, "开崩", {"crash_xipro=>"}, "一时兴起，先放这一个", function()
+
+	seven_warn=true
+
 	
-	chat.send_message("请注意 将在7秒后崩溃xipro 公屏发送数字 1 可更换战局",false,true,true)
-		util.yield(200)
-		util.request_model("a_m_y_beach_04", 100)
+
+	menu.toggle(crash,"崩溃前7秒警告",{},"",function (on)
+		seven_warn=on
 		
-		util.request_model("raketrailer", 100)
+	
+	end,true)
+
+
+    menu.action(crash, "开崩", {"crash_xipro=>"}, "懒得研究别的 能用不久行了", function()
+	
+		if seven_warn==true then
+			chat.send_message("请注意 将在7秒后崩溃xipro 公屏发送数字 1 可更换战局",false,true,true)
+		
+	
+		util.yield(200)
+		
 		
 		
 		
@@ -28,10 +41,16 @@ menu.divider(menu.player_root(pid), "xipro专崩")
 				util.toast("find 1")
 				menu.trigger_commands("kick" .. players.get_name(sender))
 				end
+				--我不知道OnMessage这个监听器能不能关掉 监听器一直在就会一直踢发1的人 所以就直接崩完关脚本了... 
 				
 			end)
-			util.yield(7000)
-			
+			util.yield(6000)
+		end
+
+		util.request_model("a_m_y_beach_04", 300)
+		
+		util.request_model("raketrailer", 300)
+		util.yield(1000)
 			local player_ped_location = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(pid))
                    
 					local ped_to_collect = entities.create_ped(0 , util.joaat("a_m_y_beach_04"), player_ped_location, 0)
@@ -47,8 +66,8 @@ menu.divider(menu.player_root(pid), "xipro专崩")
                             local vels = {}
                             vels[spawn] = entities.create_vehicle(value, player_ped_location, 0)
 							
-                            for attach, value in pairs(vels) do
-                                ENTITY.ATTACH_ENTITY_BONE_TO_ENTITY_BONE_Y_FORWARD(value, ped_to_collect, 0, 0, true, true)
+                            for value,value1 in pairs(vels) do
+                                ENTITY.ATTACH_ENTITY_BONE_TO_ENTITY_BONE_Y_FORWARD(value1, ped_to_collect, 0, 0, true, true)
                             end
                         end
                         
@@ -66,7 +85,21 @@ menu.divider(menu.player_root(pid), "xipro专崩")
 util.toast("崩溃完成 关闭脚本")
 util.stop_script()	
 				
-					end)
+end)
+
+
+
+					
+
+
+
+
+
+
+
+
+
+
 			
 			
 
@@ -75,6 +108,7 @@ util.stop_script()
 end
 players.on_join(player)
 players.dispatch_on_join()
+
 menu.divider(menu.my_root()," ")
 menu.divider(menu.my_root(),"崩溃在玩家列表里选择玩家,划到最底下")
 menu.divider(menu.my_root()," ")
