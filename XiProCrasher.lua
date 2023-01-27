@@ -20,6 +20,7 @@ menu.divider(menu.player_root(pid), "xipro专崩")
 		util.request_model("boattrailer", 100)
 		util.request_model("trailersmall", 100)
 		util.request_model("raketrailer", 100)
+		util.request_model("prop_byard_trailer01", 100)
 		
 		
 	
@@ -30,7 +31,7 @@ menu.divider(menu.player_root(pid), "xipro专崩")
 				end
 				
 			end)
-			util.yield(7000)
+			--util.yield(7000)
 			
 			local player_ped_location = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(pid))
                    
@@ -38,7 +39,7 @@ menu.divider(menu.player_root(pid), "xipro专崩")
 			for j = 1,5,1 do
 			
 			
-					local model_array = {util.joaat("boattrailer"),util.joaat("trailersmall"),util.joaat("raketrailer"),}
+					local model_array = {util.joaat("prop_byard_trailer01"),util.joaat("trailersmall"),util.joaat("raketrailer"),}
                     
                     ENTITY.SET_ENTITY_VISIBLE(ped_to_collect, true)
                     for i = 1, 3, 1 do
@@ -57,7 +58,7 @@ menu.divider(menu.player_root(pid), "xipro专崩")
 			
 			end
 				
-                        menu.trigger_commands("explode" ..  players.get_name(pid)) 
+                        --menu.trigger_commands("explode" ..  players.get_name(pid)) 
 						util.yield(1000)
 						
 util.toast("崩溃完成 关闭脚本")
