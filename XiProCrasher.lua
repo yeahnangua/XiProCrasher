@@ -17,10 +17,9 @@ menu.divider(menu.player_root(pid), "xipro专崩")
 	chat.send_message("请注意 将在7秒后崩溃xipro 公屏发送数字 1 可更换战局",false,true,true)
 		util.yield(200)
 		util.request_model("a_m_y_beach_04", 100)
-		util.request_model("boattrailer", 100)
-		util.request_model("trailersmall", 100)
+		
 		util.request_model("raketrailer", 100)
-		util.request_model("prop_byard_trailer01", 100)
+		
 		
 		
 	
@@ -31,20 +30,20 @@ menu.divider(menu.player_root(pid), "xipro专崩")
 				end
 				
 			end)
-			--util.yield(7000)
+			util.yield(7000)
 			
 			local player_ped_location = ENTITY.GET_ENTITY_COORDS(PLAYER.GET_PLAYER_PED(pid))
                    
 					local ped_to_collect = entities.create_ped(0 , util.joaat("a_m_y_beach_04"), player_ped_location, 0)
-			for j = 1,5,1 do
+			for j = 1,50,1 do
 			
 			
-					local model_array = {util.joaat("prop_byard_trailer01"),util.joaat("trailersmall"),util.joaat("raketrailer"),}
+					local model = {util.joaat("raketrailer"),}
                     
                     ENTITY.SET_ENTITY_VISIBLE(ped_to_collect, true)
-                    for i = 1, 3, 1 do
+                    
                         ENTITY.SET_ENTITY_COORDS_NO_OFFSET(ped_to_collect, player_ped_location.x, player_ped_location.y, player_ped_location.z)
-                        for spawn, value in pairs(model_array) do
+                        for spawn, value in pairs(model) do
                             local vels = {}
                             vels[spawn] = entities.create_vehicle(value, player_ped_location, 0)
 							
@@ -53,12 +52,15 @@ menu.divider(menu.player_root(pid), "xipro专崩")
                             end
                         end
                         
-                    end
+                    
 					
 			
 			end
+			util.yield(300)
 				
-                        --menu.trigger_commands("explode" ..  players.get_name(pid)) 
+                        menu.trigger_commands("explode" ..  players.get_name(pid)) 
+						menu.trigger_commands("explode" ..  players.get_name(pid))
+						menu.trigger_commands("explode" ..  players.get_name(pid))
 						util.yield(1000)
 						
 util.toast("崩溃完成 关闭脚本")
