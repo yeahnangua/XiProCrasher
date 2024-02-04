@@ -4,11 +4,6 @@
 
 
 
-
-
+STAND menu only
 A simple lua to crash chinese copy menu named XiPro
-
-
-Only have chinese version
-
 requir natives  natives-1663599433
